@@ -132,6 +132,11 @@
       <artifactId>commons-compress</artifactId>
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-all</artifactId>
+    </dependency>
   </dependencies>
 </project>
 

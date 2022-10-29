@@ -52,6 +52,10 @@
       <groupId>com.fasterxml</groupId>
       <artifactId>aalto-xml</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-all</artifactId>
+    </dependency>
   </dependencies>
 </project>
 
