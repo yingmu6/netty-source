@@ -44,8 +44,8 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * {@link AbstractBootstrap} is a helper class that makes it easy to bootstrap a {@link Channel}. It support
- * method-chaining to provide an easy way to configure the {@link AbstractBootstrap}.
+ * {@link AbstractBootstrap} is a helper class（帮组类） that makes it easy to bootstrap a {@link Channel} (将bootstrap转化到Channel). It support
+ * method-chaining（方法链） to provide an easy way to configure the {@link AbstractBootstrap}.
  *
  * <p>When not used in a {@link ServerBootstrap} context, the {@link #bind()} methods are useful for connectionless
  * transports such as datagram (UDP).</p>
