@@ -44,7 +44,7 @@ import static io.netty.util.internal.StringUtil.simpleClassName;
 /**
  * A {@link Timer} optimized for approximated I/O timeout scheduling.
  *
- * <h3>Tick Duration</h3>
+ * <h3>Tick Duration</h3> //各个组成元素的介绍
  *
  * As described with 'approximated', this timer does not execute the scheduled
  * {@link TimerTask} on time.  {@link HashedWheelTimer}, on every tick, will
@@ -57,7 +57,7 @@ import static io.netty.util.internal.StringUtil.simpleClassName;
  * the default tick duration is 100 milliseconds and you will not need to try
  * different configurations in most cases.
  *
- * <h3>Ticks per Wheel (Wheel Size)</h3>
+ * <h3>Ticks per Wheel (Wheel Size)</h3> //每个轮子的tick数量
  *
  * {@link HashedWheelTimer} maintains a data structure called 'wheel'.
  * To put simply, a wheel is a hash table of {@link TimerTask}s whose hash
@@ -69,7 +69,7 @@ import static io.netty.util.internal.StringUtil.simpleClassName;
  *
  * {@link HashedWheelTimer} creates a new thread whenever it is instantiated and
  * started.  Therefore, you should make sure to create only one instance and
- * share it across your application.  One of the common mistakes, that makes
+ * share it across（在...上面，穿过、跨越） your application.  One of the common mistakes, that makes
  * your application unresponsive, is to create a new instance for every connection.
  *
  * <h3>Implementation Details</h3>
@@ -80,9 +80,22 @@ import static io.netty.util.internal.StringUtil.simpleClassName;
  * <a href="https://cseweb.ucsd.edu/users/varghese/PAPERS/twheel.ps.Z">'Hashed
  * and Hierarchical Timing Wheels: data structures to efficiently implement a
  * timer facility'</a>.  More comprehensive slides are located
- * <a href="https://www.cse.wustl.edu/~cdgill/courses/cs6874/TimingWheels.ppt">here</a>.
+ * <a href="https://www.cse.wustl.edu/~cdgill/courses/cs6874/TimingWheels.ppt">here</a>.  //具体使用的文档
  */
 public class HashedWheelTimer implements Timer {
+    /**
+     * HashedWheelTimer提供的是一个定时任务的一个优化实现方案，在netty中主要用于异步IO的定时规划触发（A timer optimized for approximated I/O timeout scheduling）
+     * https://www.jianshu.com/p/1eb1b7c67d63
+     *
+     * workerThread 单线程用于处理所有的定时任务，它会在每个tick执行一个bucket中所有的定时任务，以及一些其他的操作。意味着定时任务不能有较大的阻塞和耗时，不然就会影响定时任务执行的准时性和有效性。
+     * wheel 一个时间轮，其实就是一个环形数组，数组中的每个元素代表的就是未来的某些时间片段上需要执行的定时任务的集合。
+     * 这里需要注意的就是不是某个时间而是某些时间。因为比方说我时间轮上的大小是10，时间间隔是1s，那么我1s和11s的要执行的定时任务都会在index为1的格子上。
+     * tick 工作线程当前运行的tick数，每一个tick代表worker线程当前的一次工作时间
+     * hash 在时间轮上的hash函数。默认是tick%bucket的数量，即将某个时间节点映射到了时间轮上的某个唯一的格子上。
+     * bucket 时间轮上的一个格子，它维护的是一个Timeout的双向链表，保存的是这个哈希到这个格子上的所有Timeout任务。
+     * timeout 代表一个定时任务，其中记录了自己的deadline，运行逻辑以及在bucket中需要呆满的圈数，比方说之前1s和11s的例子，他们对应的timeout中圈数就应该是0和1。 这样当遍历一个bucket中所有的timeout的时候，只要圈数为0说明就应该被执行，而其他情况就把圈数-1就好。
+     *
+     */
 
     static final InternalLogger logger =
             InternalLoggerFactory.getInstance(HashedWheelTimer.class);
