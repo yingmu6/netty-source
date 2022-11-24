@@ -214,7 +214,7 @@ public class HashedWheelTimer implements Timer {
      * @param ticksPerWheel the size of the wheel
      * @param leakDetection {@code true} if leak detection should be enabled always,
      *                      if false it will only be enabled if the worker thread is not
-     *                      a daemon thread.
+     *                      a daemon thread.（是否进行泄露监测）
      * @throws NullPointerException     if either of {@code threadFactory} and {@code unit} is {@code null}
      * @throws IllegalArgumentException if either of {@code tickDuration} and {@code ticksPerWheel} is &lt;= 0
      */

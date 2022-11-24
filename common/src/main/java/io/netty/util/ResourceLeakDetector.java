@@ -39,7 +39,7 @@ import static io.netty.util.internal.StringUtil.EMPTY_STRING;
 import static io.netty.util.internal.StringUtil.NEWLINE;
 import static io.netty.util.internal.StringUtil.simpleClassName;
 
-public class ResourceLeakDetector<T> {
+public class ResourceLeakDetector<T> { //资源泄露监测
 
     private static final String PROP_LEVEL_OLD = "io.netty.leakDetectionLevel";
     private static final String PROP_LEVEL = "io.netty.leakDetection.level";
@@ -57,10 +57,11 @@ public class ResourceLeakDetector<T> {
 
     /**
      * Represents the level of resource leak detection.
+     * （表示资源泄漏检测的级别）
      */
-    public enum Level {
+    public enum Level { //监测级别
         /**
-         * Disables resource leak detection.
+         * Disables resource leak detection.（弃用资源检测）
          */
         DISABLED,
         /**
